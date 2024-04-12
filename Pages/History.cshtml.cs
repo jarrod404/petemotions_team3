@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using PetEmotionsApp.Data;
 using PetEmotionsApp.Models;
 
-namespace PetEmotionsApp.Pages_FileUploader
+namespace PetEmotionsApp.Pages
 {
     public class HistoryModel : PageModel
     {
