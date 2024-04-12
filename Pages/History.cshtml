@@ -27,29 +27,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.FileUpload[0].emotion)
             </th>
-            <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model.FileUpload) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileContent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.fileDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.emotion)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
 </table>
 
 <!-- Chart.js-->
@@ -72,12 +51,39 @@ https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js
 <div class = "child" style = "width:500px; float:left;">
   <canvas id="myChart" width="200" height="100" ></canvas>
 
-  <script>
-const xValues = ["Happy", "Sad", "Angry", "Other"];
-const yValues = [12, 8, 9, 10];
-const barColors = ["green", "blue","red", "purple"];
+<script>
+        let happyCount = 0;
+        let sadCount = 0;
+        let angryCount = 0;
+        let otherCount = 0;
 
-new Chart("myChart", {
+            const fileUploadData = @Html.Raw(Json.Serialize(Model.FileUpload));
+
+            // Iterate through file upload data
+            fileUploadData.forEach(item => {
+                console.log("Processing emotion:", item.emotion);
+
+                switch (item.emotion) {
+                    case 0:
+                        happyCount++;
+                        break;
+                    case 1:
+                        sadCount++;
+                        break;
+                    case 2:
+                        angryCount++;
+                        break;
+                    default:
+                        otherCount++;
+                        break;
+                }
+            });
+
+    const xValues = ["Happy", "Sad", "Angry", "Other"];
+    const yValues = [happyCount, sadCount, angryCount, otherCount];
+    const barColors = ["green", "blue","red", "purple"];
+
+            new Chart("myChart", {
   type: "pie",
   data: {
     labels: xValues,
